@@ -61,7 +61,7 @@ function drawBat()
 
 end
 
-function drawWalls()
+function drawWalls() 
 
 	line(0,127,0,0,15)
 	line(0,0,239,0,15)
