@@ -1,0 +1,126 @@
+
+
+-- title:  Pong
+-- author: BurritoStudios
+-- desc:   Pong Game
+-- script: lua
+
+screenMaxX = 232
+screenMaxY = 120
+
+ball = {
+	x = 120,
+	y = 0,
+	xSpeed = 2,
+	ySpeed = 1
+}
+
+bat = {
+	x = 114,
+	y = 120,
+	speed = 4
+}
+
+score = 0
+
+function TIC()
+
+	moveBat()
+	moveBall()
+	checkHit()
+	
+	cls()
+	
+	print("score = "..score,3,3)
+	
+	drawWalls()
+	drawBat()
+	drawBall()
+
+end
+
+function moveBat()
+
+	if (btn(2)) then
+		bat.x = bat.x - bat.speed
+	end
+	if (btn(3)) then
+		bat.x = bat.x + bat.speed
+	end
+	if (bat.x > (screenMaxX - 8)) then
+		bat.x = screenMaxX - 8
+	elseif (bat.x < 0) then
+		bat.x = 0
+	end
+
+end
+
+function drawBat()
+
+	spr(0, bat.x, bat.y, 0,1,0,0,2,1)
+
+end
+
+function drawWalls()
+
+	line(0,127,0,0,15)
+	line(0,0,239,0,15)
+	line(239,0,239,127,15)
+
+end
+
+function moveBall()
+
+	ball.x = ball.x + ball.xSpeed
+	ball.y = ball.y + ball.ySpeed
+	
+	if (ball.x > screenMaxX) then
+		ball.x = screenMaxX
+		ball.xSpeed = -ball.xSpeed
+		sfx(0,60,5)
+	elseif (ball.x < 0) then
+		ball.x = 0
+		ball.xSpeed = -ball.xSpeed
+		sfx(0,60,5)
+	end
+	
+	if (ball.y < 0) then
+		ball.y = 0
+		ball.ySpeed = -ball.ySpeed
+		sfx(0,70,5)
+	end		
+
+end
+
+function drawBall()
+
+	spr(2, ball.x, ball.y)
+
+end
+
+function checkHit()
+
+	if (ball.ySpeed > 0) then
+	
+		if (ball.y > (bat.y - 8))
+			and (ball.y < (bat.y)) then
+			
+				if (ball.x > (bat.x - 6))
+				 and (ball.x < (bat.x + 22)) then
+				
+					ball.ySpeed = -ball.ySpeed
+					ball.xSpeed = ball.xSpeed +
+						math.random(-1,1)
+					score = score + 1
+					sfx(1,40,5)
+					
+				end
+				
+			
+		end
+	
+	
+	end
+
+end
+
